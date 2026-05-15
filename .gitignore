@@ -1,0 +1,35 @@
+# ===== File compilati Maven/Java =====
+target/
+*.class
+*.jar
+*.war
+
+# ===== File di sistema macOS =====
+.DS_Store
+
+# ===== Configurazioni IDE (personali, non utili ad altri) =====
+.vscode/
+.idea/
+*.iml
+.classpath
+.project
+.settings/
+
+# ===== Diari personali di sviluppo (non parte del prodotto finale) =====
+SETUP.md
+SESSIONE-*.md
+
+# ===== File temporanei della libreria (test locali) =====
+mix.json
+*.json.bak
+
+# ===== Log =====
+*.log
+
+# ===== File temporanei generici =====
+*.tmp
+*.swp
+*~
+
+# ===== Cartelle di backup automatico =====
+.history/
