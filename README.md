@@ -510,4 +510,4 @@ TOTALE:                  113 test
 
 Questo progetto è stato sviluppato come prima esperienza significativa di programmazione in Java. Le scelte di design (immutabilità, Exception Shielding via `Result<T>`, parser JSON custom, Memento con deep copy ottimizzata) sono state fatte in modo consapevole privilegiando la chiarezza concettuale e la robustezza rispetto alla rapidità di implementazione.
 
-Il codice è organizzato per essere leggibile, ben testato, e difendibile in sede di colloquio. Ogni scelta tecnica è motivata nel codice (commenti Javadoc) e in questo README.
+Il codice è organizzato per essere leggibile e ben testato. Ogni scelta tecnica è motivata nel codice (commenti Javadoc) e in questo README.
