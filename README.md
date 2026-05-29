@@ -67,9 +67,9 @@ Ho deliberatamente limitato lo scope a metadati e organizzazione perché aggiung
 | **java.util.logging** | (standard JDK) | Scelto invece di SLF4J/Log4j per evitare dipendenze esterne. Sufficiente per il bisogno del progetto |
 | **java.nio.file** | (standard JDK) | API moderna per I/O su file, più sicura e meno verbosa di `java.io` |
 
-### Design Pattern obbligatori (16 pt)
+### Design Pattern obbligatori
 
-#### Composite (4 pt)
+#### Composite
 
 **Dove**: interfaccia `LibraryNode`, classi `Track` (foglia) e `Collection` (composito).
 
@@ -77,7 +77,7 @@ Ho deliberatamente limitato lo scope a metadati e organizzazione perché aggiung
 
 **Cosa l'ha resa ricorsiva**: la lista interna di `Collection` è dichiarata come `List<LibraryNode>`, non `List<Track>`. Questo permette di mettere dentro una `Collection` sia tracce sia altre collezioni. È la scelta progettuale chiave del pattern.
 
-#### Iterator (4 pt)
+#### Iterator
 
 **Dove**: classe `Collection` implementa `Iterable<Track>`, classe `RecursiveTrackIterator` implementa `Iterator<Track>`.
 
@@ -85,7 +85,7 @@ Ho deliberatamente limitato lo scope a metadati e organizzazione perché aggiung
 
 **Tecnica**: uso uno **stack esplicito** (`ArrayDeque<LibraryNode>`) invece della ricorsione tradizionale. Quando incontro una `Collection` nella visita, ne espando i figli sulla pila; quando trovo una `Track`, la restituisco. Lo stack esplicito previene `StackOverflowError` su strutture molto profonde.
 
-#### Factory (3 pt)
+#### Factory
 
 **Dove**: classe `LibraryNodeFactory`.
 
@@ -93,7 +93,7 @@ Ho deliberatamente limitato lo scope a metadati e organizzazione perché aggiung
 
 **Implementazione**: classe utility con metodi `static` e costruttore privato che lancia `UnsupportedOperationException`. Idioma standard di Java per classi utility, in linea con `java.util.Collections` o `java.lang.Math`.
 
-#### Exception Shielding (5 pt)
+#### Exception Shielding
 
 **Dove**: classe `LibraryService` (boundary del sistema) + classe generica `Result<T>` + gerarchia di eccezioni di dominio (`LibraryException`, `DuplicateNodeException`, `NodeNotFoundException`).
 
@@ -107,9 +107,9 @@ Ho deliberatamente limitato lo scope a metadati e organizzazione perché aggiung
 
 3. **`LibraryService` come boundary**: ogni metodo pubblico cattura le eccezioni interne, le **logga internamente** con stack trace completo, e ritorna un `Result.failure(messaggio)`. Distinguo nel catch tra errori "attesi" (validazione, duplicato) — per i quali espongo il messaggio specifico — ed errori "inattesi" — per i quali uso un messaggio generico per non rischiare information disclosure.
 
-### Bonus β implementati (17 pt aggiuntivi)
+### Bonus β implementati
 
-#### Stream API & Lambda (+5 pt)
+#### Stream API & Lambda
 
 **Dove**: classe `Collection` espone `streamTracks()` + 6 metodi di convenienza basati su stream.
 
@@ -126,7 +126,7 @@ Lo `streamTracks()` riusa l'iteratore esistente come sorgente, garantendo coeren
 
 Tecniche moderne usate: **method reference** (`Track::getBpm`), **OptionalDouble** per evitare NPE, **Collectors.groupingBy** per raggruppamenti, **mapToInt** per statistiche su tipi primitivi.
 
-#### Strategy (+4 pt)
+#### Strategy
 
 **Dove**: interfaccia `SortStrategy` + 4 implementazioni (`SortByBpm`, `SortByDuration`, `SortByTitle`, `SortByArtist`).
 
@@ -134,7 +134,7 @@ Tecniche moderne usate: **method reference** (`Track::getBpm`), **OptionalDouble
 
 **Nota didattica**: Java 8 ha già l'interfaccia `Comparator<T>` che copre lo stesso caso d'uso. Ho preferito un'interfaccia `SortStrategy` esplicita per rendere il pattern visibile e didatticamente chiaro nel codice. In un'app reale userei direttamente `Comparator` per non reinventare la ruota.
 
-#### Builder (+3 pt)
+#### Builder
 
 **Dove**: classe statica annidata `Track.Builder`.
 
@@ -151,7 +151,7 @@ Track t = new Track.Builder("Brown Sugar", "D'Angelo")
 
 La validazione è delegata al costruttore di `Track`, garantendo **un'unica fonte di verità** per le regole di dominio. Il costruttore originale resta disponibile per chi preferisce.
 
-#### Memento (+3 pt)
+#### Memento
 
 **Dove**: classe statica annidata `Collection.CollectionMemento` (Memento), metodi `saveMemento`/`restoreFromMemento` su `Collection` (Originator), classe `LibraryHistory` (Caretaker).
 
@@ -164,7 +164,7 @@ L'opacità è garantita da: classe annidata statica + costruttore e getter **pac
 
 **Ottimizzazione**: poiché `Track` è già immutabile, lo snapshot fa **shallow copy** delle Track (sicura: nessuno può modificarle) e **deep copy ricorsiva** solo per le sotto-Collection. Sfrutto l'immutabilità come ottimizzazione di memoria.
 
-#### Singleton (+2 pt)
+#### Singleton
 
 **Dove**: classe `LibraryConfig` per la configurazione applicativa.
 
@@ -174,7 +174,7 @@ L'opacità è garantita da: classe annidata statica + costruttore e getter **pac
 
 **Nota didattica**: sono consapevole che Singleton è spesso considerato un anti-pattern quando applicato a sproposito (introduce stato globale, complica i test). Qui l'uso è limitato a configurazione di sola lettura, quindi gli inconvenienti tipici non si manifestano. Per i test ho previsto un metodo `resetForTesting()` package-private.
 
-### Tecnologie core utilizzate (14 pt)
+### Tecnologie core utilizzate
 
 | Tecnologia | Dove | Punti |
 |---|---|---|
