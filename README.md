@@ -184,22 +184,13 @@ L'opacità è garantita da: classe annidata statica + costruttore e getter **pac
 | **Logging** | `java.util.logging.Logger` con livelli `SEVERE`/`WARNING`/`INFO` differenziati per tipo di errore | 2 |
 | **JUnit Testing** | 113 test in 11 suite, pattern AAA, `@TempDir` per test su filesystem, test specifici anti-information-disclosure | 3 |
 
-### Validazione e sicurezza (anti-penalità γ)
+### Validazione e sicurezza
 
 Ogni costruttore valida i parametri in ingresso e lancia eccezioni di dominio appropriate per input invalidi. Le eccezioni vengono catturate al boundary (`LibraryService`) e tradotte in messaggi user-friendly. Questo previene:
 - Crash dell'applicazione su input invalido (validazione fail-fast)
 - Information disclosure di dettagli implementativi (Exception Shielding)
 
 In sostanza, **un oggetto invalido non può esistere nel sistema**.
-
-### Riepilogo del voto
-
-| Categoria | Punti | Stato |
-|---|---|---|
-| α (requisiti minimi obbligatori) | 30/30 | ✅ tutti completi |
-| β (bonus opzionali) | 17/25 | ✅ Stream API +5, Strategy +4, Builder +3, Memento +3, Singleton +2 |
-| γ (penalità di sicurezza) | 0 | ✅ nessuna |
-| **TOTALE** | **47/50** | |
 
 ---
 
